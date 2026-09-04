@@ -1,0 +1,8 @@
+{
+  "name": "敦煌星图 · 专属长卷生成器",
+  "description": "输入生日生成敦煌写本S.3326风貌本命星图长卷，推演本命二十八宿、三垣星象与司天监星曜谶语。",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

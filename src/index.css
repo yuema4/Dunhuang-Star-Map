@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .writing-vertical-rl {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+  }
+  .writing-vertical-mixed {
+    writing-mode: vertical-rl;
+  }
+}
+
+/* Custom scrollbar for horizontal Dunhuang scroll */
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0F0E0C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C5A059;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E2DCC8;
+}
+
+.font-serif-sc {
+  font-family: 'Noto Serif SC', 'Songti SC', SimSun, serif;
+}
+
+.font-calligraphy {
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive, serif;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+/* Aged silk and parchment background effect */
+.parchment-bg {
+  background-color: #DBCBB1;
+  background-image: 
+    radial-gradient(#2A261F 0.3px, transparent 0.3px),
+    radial-gradient(#8D4B32 0.3px, transparent 0.3px);
+  background-size: 24px 24px, 48px 48px;
+  background-position: 0 0, 12px 12px;
+}
+
+.stargazer-grid {
+  background-image: radial-gradient(#C5A059 0.5px, transparent 0.5px);
+  background-size: 32px 32px;
+}

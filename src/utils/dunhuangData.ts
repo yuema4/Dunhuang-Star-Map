@@ -1,0 +1,736 @@
+/**
+ * Dunhuang Star Atlas (S.3326 / P.2508) Data & Astrological Canon
+ * 
+ * The Dunhuang Star Chart (British Library Or.8210/S.3326) dates to ~700 AD (Tang Dynasty),
+ * featuring 1,339 stars grouped into 257 asterisms, drawn in black, red (Shi Shen),
+ * and yellow/gold (Wu Xian), with monthly hour-angle cylindrical charts and circumpolar star map.
+ */
+
+import { Mansion28, StarOracleResult } from '../types';
+
+export const MANSIONS_28: Mansion28[] = [
+  // 东方苍龙 (Eastern Azure Dragon)
+  {
+    name: '角',
+    fullName: '角木蛟',
+    symbol: '东方苍龙',
+    animal: '蛟',
+    element: '木',
+    planet: '岁星 (木)',
+    degrees: 12,
+    startAngle: 0,
+    starsCount: 2,
+    tangText: '仲春二月，日宿奎，初昏角中，旦尾中。角二星为天关，其间天门也。主苍龙角，王者法度，万物毕出。',
+    temperament: '破云而出，秉正开象，骨秀神清',
+    fortuneKeywords: ['开物成务', '青龙出海', '法度贞吉'],
+    auspiciousMineral: '石绿 (孔雀石)',
+    stars: [
+      { name: '角宿一 (Spica)', x: -25, y: -15, mag: 1.0 },
+      { name: '角宿二', x: 25, y: 15, mag: 2.3 },
+    ],
+    connections: [[0, 1]]
+  },
+  {
+    name: '亢',
+    fullName: '亢金龙',
+    symbol: '东方苍龙',
+    animal: '龙',
+    element: '金',
+    planet: '太白 (金)',
+    degrees: 9,
+    startAngle: 12.8,
+    starsCount: 4,
+    tangText: '亢四星为疏庙，主天子听政之所，苍龙之咽吭也。主迎风调雨顺，四方来朝。',
+    temperament: '英迈卓然，洞见深远，威重自持',
+    fortuneKeywords: ['龙腾紫霄', '政教清明', '贵人扶掖'],
+    auspiciousMineral: '朱砂 (辰砂赤)',
+    stars: [
+      { name: '亢宿一', x: -30, y: -20, mag: 2.5 },
+      { name: '亢宿二', x: -10, y: -5, mag: 2.8 },
+      { name: '亢宿三', x: 10, y: 10, mag: 2.7 },
+      { name: '亢宿四', x: 30, y: 25, mag: 3.1 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3]]
+  },
+  {
+    name: '氐',
+    fullName: '氐土貉',
+    symbol: '东方苍龙',
+    animal: '貉',
+    element: '土',
+    planet: '镇星 (土)',
+    degrees: 15,
+    startAngle: 25.7,
+    starsCount: 4,
+    tangText: '氐四星为天府，苍龙之胸也。春分之令，天下农桑始备，百谷丰润。',
+    temperament: '敦朴安详，纳容百川，慎独谨行',
+    fortuneKeywords: ['根基盘固', '德厚流光', '万宝归廪'],
+    auspiciousMineral: '雄黄 (敦煌金石)',
+    stars: [
+      { name: '氐宿一', x: -28, y: 20, mag: 2.7 },
+      { name: '氐宿二', x: 25, y: 22, mag: 2.6 },
+      { name: '氐宿三', x: 15, y: -25, mag: 3.2 },
+      { name: '氐宿四', x: -18, y: -20, mag: 3.4 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 0]]
+  },
+  {
+    name: '房',
+    fullName: '房日兔',
+    symbol: '东方苍龙',
+    animal: '兔',
+    element: '火',
+    planet: '太阳 (日)',
+    degrees: 5,
+    startAngle: 38.5,
+    starsCount: 4,
+    tangText: '房四星为天驷，苍龙之腹肋也，又为明堂。王道顺昌，四星明润，千里骏骥同尘。',
+    temperament: '温良恭俭，怀玉内敛，日照林泉',
+    fortuneKeywords: ['日出明堂', '吉庆延绵', '清气相随'],
+    auspiciousMineral: '泥金 (泥金粉)',
+    stars: [
+      { name: '房宿一', x: 0, y: -35, mag: 2.5 },
+      { name: '房宿二', x: 0, y: -12, mag: 2.3 },
+      { name: '房宿三', x: 0, y: 12, mag: 2.8 },
+      { name: '房宿四', x: 0, y: 35, mag: 2.6 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3]]
+  },
+  {
+    name: '心',
+    fullName: '心月狐',
+    symbol: '东方苍龙',
+    animal: '狐',
+    element: '火',
+    planet: '太阴 (月)',
+    degrees: 5,
+    startAngle: 51.4,
+    starsCount: 3,
+    tangText: '心三星为天王正位，大星荧惑天王，左右明主侍臣。灵狐照月，洞鉴玄机。',
+    temperament: '心智空明，悟性超群，独照幽微',
+    fortuneKeywords: ['大火流金', '心光如烛', '贵格昭彰'],
+    auspiciousMineral: '辰砂 (敦煌朱)',
+    stars: [
+      { name: '心宿一', x: -28, y: 8, mag: 2.9 },
+      { name: '心宿二 (大火星 Antares)', x: 0, y: -6, mag: 0.9 },
+      { name: '心宿三', x: 28, y: 12, mag: 2.8 },
+    ],
+    connections: [[0, 1], [1, 2]]
+  },
+  {
+    name: '尾',
+    fullName: '尾火虎',
+    symbol: '东方苍龙',
+    animal: '虎',
+    element: '火',
+    planet: '荧惑 (火)',
+    degrees: 18,
+    startAngle: 64.2,
+    starsCount: 9,
+    tangText: '尾九星为后宫，苍龙之尾也。九星勾盘如环，银河注其旁。主子孙炽盛，福寿绵远。',
+    temperament: '威烈雄健，兼济天下，意气干云',
+    fortuneKeywords: ['虎啸生风', '星汉回环', '气势连绵'],
+    auspiciousMineral: '赤赭石',
+    stars: [
+      { name: '尾宿一', x: -35, y: -25, mag: 1.6 },
+      { name: '尾宿二', x: -25, y: -15, mag: 2.3 },
+      { name: '尾宿三', x: -15, y: -5, mag: 2.4 },
+      { name: '尾宿四', x: -5, y: 10, mag: 2.8 },
+      { name: '尾宿五', x: 5, y: 22, mag: 2.9 },
+      { name: '尾宿六', x: 20, y: 30, mag: 3.1 },
+      { name: '尾宿七', x: 32, y: 20, mag: 3.0 },
+      { name: '尾宿八', x: 35, y: 5, mag: 2.7 },
+      { name: '尾宿九', x: 28, y: -10, mag: 2.5 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8]]
+  },
+  {
+    name: '箕',
+    fullName: '箕水豹',
+    symbol: '东方苍龙',
+    animal: '豹',
+    element: '水',
+    planet: '辰星 (水)',
+    degrees: 11,
+    startAngle: 77.1,
+    starsCount: 4,
+    tangText: '箕四星为风府，苍龙之摆尾也。能扬沙起云，生八荒清风，润天下万稼。',
+    temperament: '捷迅灵动，任侠倜傥，驭风千里',
+    fortuneKeywords: ['风生水起', '吐纳山川', '通达八极'],
+    auspiciousMineral: '青金石 (石青)',
+    stars: [
+      { name: '箕宿一', x: -20, y: -20, mag: 2.6 },
+      { name: '箕宿二', x: 20, y: -22, mag: 2.8 },
+      { name: '箕宿三', x: 25, y: 20, mag: 2.7 },
+      { name: '箕宿四', x: -15, y: 18, mag: 3.1 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 0]]
+  },
+
+  // 北方玄武 (Northern Black Tortoise)
+  {
+    name: '斗',
+    fullName: '斗木獬',
+    symbol: '北方玄武',
+    animal: '獬',
+    element: '木',
+    planet: '岁星 (木)',
+    degrees: 26,
+    startAngle: 90,
+    starsCount: 6,
+    tangText: '南斗六星为天庙，宰相之职也。注延寿命，酌酒量天。玄武之首，北帝之司命。',
+    temperament: '魁伟冲和，胸怀斗极，度量弘远',
+    fortuneKeywords: ['南斗注生', '酌酌星斛', '福寿康宁'],
+    auspiciousMineral: '青金石 (敦煌绀蓝)',
+    stars: [
+      { name: '斗宿一', x: 30, y: -25, mag: 2.8 },
+      { name: '斗宿二', x: 15, y: -15, mag: 2.0 },
+      { name: '斗宿三', x: -5, y: -10, mag: 2.7 },
+      { name: '斗宿四', x: -20, y: -12, mag: 2.1 },
+      { name: '斗宿五', x: -28, y: 15, mag: 2.6 },
+      { name: '斗宿六', x: -10, y: 22, mag: 3.2 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 2]]
+  },
+  {
+    name: '牛',
+    fullName: '牛金牛',
+    symbol: '北方玄武',
+    animal: '牛',
+    element: '金',
+    planet: '太白 (金)',
+    degrees: 8,
+    startAngle: 102.8,
+    starsCount: 6,
+    tangText: '牛六星为关梁，主关津行旅。牵牛织女相望，桥梁通达，天下安泰。',
+    temperament: '笃定坚毅，力耕不辍，金石不渝',
+    fortuneKeywords: ['金牛服耒', '通关利涉', '厚德载物'],
+    auspiciousMineral: '赭石黄',
+    stars: [
+      { name: '牛宿一', x: -18, y: -25, mag: 3.0 },
+      { name: '牛宿二', x: 0, y: -20, mag: 3.6 },
+      { name: '牛宿三', x: 18, y: -15, mag: 3.8 },
+      { name: '牛宿四', x: 22, y: 10, mag: 3.9 },
+      { name: '牛宿五', x: 0, y: 20, mag: 4.0 },
+      { name: '牛宿六', x: -20, y: 12, mag: 3.7 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0]]
+  },
+  {
+    name: '女',
+    fullName: '女土蝠',
+    symbol: '北方玄武',
+    animal: '蝠',
+    element: '土',
+    planet: '镇星 (土)',
+    degrees: 12,
+    startAngle: 115.7,
+    starsCount: 4,
+    tangText: '婺女四星为须女，天之府库织纴之事也。天下巧艺、锦绣章纹皆由女宿主之。',
+    temperament: '心巧手敏，织锦绘星，静水流深',
+    fortuneKeywords: ['巧夺天工', '天孙织锦', '灵慧独秀'],
+    auspiciousMineral: '石绿 (孔雀石绿)',
+    stars: [
+      { name: '女宿一', x: -20, y: -18, mag: 3.8 },
+      { name: '女宿二', x: 20, y: -22, mag: 4.1 },
+      { name: '女宿三', x: 15, y: 20, mag: 4.4 },
+      { name: '女宿四', x: -15, y: 15, mag: 4.2 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 0]]
+  },
+  {
+    name: '虚',
+    fullName: '虚日鼠',
+    symbol: '北方玄武',
+    animal: '鼠',
+    element: '火',
+    planet: '太阳 (日)',
+    degrees: 10,
+    startAngle: 128.5,
+    starsCount: 2,
+    tangText: '虚二星为天节，主宗庙礼乐。虚明朗润，则海内清穆，神灵安宁。',
+    temperament: '澹泊明志，宁静致远，清虚若谷',
+    fortuneKeywords: ['虚室生白', '神和气定', '礼乐安宁'],
+    auspiciousMineral: '辰砂朱红',
+    stars: [
+      { name: '虚宿一', x: 0, y: -20, mag: 3.1 },
+      { name: '虚宿二', x: 0, y: 20, mag: 4.0 },
+    ],
+    connections: [[0, 1]]
+  },
+  {
+    name: '危',
+    fullName: '危月燕',
+    symbol: '北方玄武',
+    animal: '燕',
+    element: '火',
+    planet: '太阴 (月)',
+    degrees: 17,
+    startAngle: 141.4,
+    starsCount: 3,
+    tangText: '危三星三星三星如屋盖，玄武之背也。主筑城室，燕子衔泥，居安思危。',
+    temperament: '敏识机变，高瞻远瞩，处变不惊',
+    fortuneKeywords: ['居安处泰', '崇墉百仞', '化险为夷'],
+    auspiciousMineral: '金箔色',
+    stars: [
+      { name: '危宿一', x: 0, y: -25, mag: 2.4 },
+      { name: '危宿二', x: -22, y: 15, mag: 3.5 },
+      { name: '危宿三', x: 22, y: 15, mag: 3.6 },
+    ],
+    connections: [[0, 1], [0, 2]]
+  },
+  {
+    name: '室',
+    fullName: '室火猪',
+    symbol: '北方玄武',
+    animal: '猪',
+    element: '火',
+    planet: '荧惑 (火)',
+    degrees: 16,
+    startAngle: 154.2,
+    starsCount: 2,
+    tangText: '室二星为清庙，又为营室。主土工大作，定四方方位。室星中，天下筑宫室。',
+    temperament: '栋梁之才，构筑大业，沈厚笃实',
+    fortuneKeywords: ['经始安康', '营构八荒', '室家充盈'],
+    auspiciousMineral: '赭石赤',
+    stars: [
+      { name: '室宿一 (Markab)', x: -20, y: -20, mag: 2.4 },
+      { name: '室宿二 (Scheat)', x: 20, y: 20, mag: 2.4 },
+    ],
+    connections: [[0, 1]]
+  },
+  {
+    name: '壁',
+    fullName: '壁水貐',
+    symbol: '北方玄武',
+    animal: '貐',
+    element: '水',
+    planet: '辰星 (水)',
+    degrees: 9,
+    startAngle: 167.1,
+    starsCount: 2,
+    tangText: '壁二星为秘府，主天下文章书籍图纬。文章大盛，科甲连绵，翰墨留光。',
+    temperament: '渊雅博学，文澜涌翠，笔落惊云',
+    fortuneKeywords: ['万卷琳琅', '翰墨经纶', '文运恒通'],
+    auspiciousMineral: '青金石 (石青)',
+    stars: [
+      { name: '壁宿一 (Algenib)', x: -18, y: -18, mag: 2.8 },
+      { name: '壁宿二', x: 18, y: 18, mag: 3.2 },
+    ],
+    connections: [[0, 1]]
+  },
+
+  // 西方白虎 (Western White Tiger)
+  {
+    name: '奎',
+    fullName: '奎木狼',
+    symbol: '西方白虎',
+    animal: '狼',
+    element: '木',
+    planet: '岁星 (木)',
+    degrees: 16,
+    startAngle: 180,
+    starsCount: 16,
+    tangText: '奎十六星为天库，白虎之尾与后足也。形似长鱼，主甲兵威肃，文曲初醒。',
+    temperament: '啸傲风月，文武兼资，气格峭拔',
+    fortuneKeywords: ['奎星高照', '文韬武略', '神锋出匣'],
+    auspiciousMineral: '石青绀蓝',
+    stars: [
+      { name: '奎一', x: -35, y: -20, mag: 3.8 },
+      { name: '奎二', x: -25, y: -10, mag: 3.9 },
+      { name: '奎三', x: -15, y: -5, mag: 3.5 },
+      { name: '奎四', x: 0, y: 5, mag: 3.4 },
+      { name: '奎五', x: 15, y: 12, mag: 3.6 },
+      { name: '奎六', x: 30, y: 18, mag: 3.2 },
+      { name: '奎七', x: 25, y: -15, mag: 3.7 },
+      { name: '奎八', x: -5, y: -25, mag: 3.9 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0]]
+  },
+  {
+    name: '娄',
+    fullName: '娄金狗',
+    symbol: '西方白虎',
+    animal: '狗',
+    element: '金',
+    planet: '太白 (金)',
+    degrees: 12,
+    startAngle: 192.8,
+    starsCount: 3,
+    tangText: '娄三星为聚众，主郊祀牺牲、天府牧养之事。三峰齐明，天下丰乐，和气充溢。',
+    temperament: '仁厚忠忱，明辨曲直，亲和万物',
+    fortuneKeywords: ['瑞气盈门', '九牧同和', '忠恕传芳'],
+    auspiciousMineral: '敦煌雄黄',
+    stars: [
+      { name: '娄宿一 (Hamal)', x: -25, y: 10, mag: 2.0 },
+      { name: '娄宿二 (Sheratan)', x: 5, y: -15, mag: 2.6 },
+      { name: '娄宿三 (Mesarthim)', x: 22, y: 5, mag: 3.9 },
+    ],
+    connections: [[0, 1], [1, 2]]
+  },
+  {
+    name: '胃',
+    fullName: '胃土雉',
+    symbol: '西方白虎',
+    animal: '雉',
+    element: '土',
+    planet: '镇星 (土)',
+    degrees: 14,
+    startAngle: 205.7,
+    starsCount: 3,
+    tangText: '胃三星为天仓，五谷所聚之地。大唐天库盈仓，万仓充实，岁稔年丰。',
+    temperament: '安和温厚，纳万粟而自富，意远志坚',
+    fortuneKeywords: ['积谷成山', '天廪盈溢', '丰亨豫大'],
+    auspiciousMineral: '雄黄明金',
+    stars: [
+      { name: '胃宿一', x: -20, y: -10, mag: 3.5 },
+      { name: '胃宿二', x: 0, y: 15, mag: 3.9 },
+      { name: '胃宿三', x: 20, y: -8, mag: 4.1 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 0]]
+  },
+  {
+    name: '昴',
+    fullName: '昴日鸡',
+    symbol: '西方白虎',
+    animal: '鸡',
+    element: '火',
+    planet: '太阳 (日)',
+    degrees: 11,
+    startAngle: 218.5,
+    starsCount: 7,
+    tangText: '昴七星为旄头，胡兵之星也。昴星攒聚如珠，七曜朗澈，大漠霜晨，鸣旦天光。',
+    temperament: '霜雪襟怀，啼鸣破晓，刚正孤标',
+    fortuneKeywords: ['破晓啼明', '星丛缀玉', '威仪四表'],
+    auspiciousMineral: '石绿 (孔雀石)',
+    stars: [
+      { name: '昴宿一 (Alcyone)', x: 0, y: 0, mag: 2.8 },
+      { name: '昴宿二 (Electra)', x: -18, y: -6, mag: 3.7 },
+      { name: '昴宿三 (Maia)', x: -10, y: 15, mag: 3.8 },
+      { name: '昴宿四 (Merope)', x: -5, y: -18, mag: 4.1 },
+      { name: '昴宿五 (Taygeta)', x: -22, y: 12, mag: 4.3 },
+      { name: '昴宿六 (Atlas)', x: 18, y: 5, mag: 3.6 },
+      { name: '昴宿七 (Pleione)', x: 20, y: 14, mag: 5.0 },
+    ],
+    connections: [[1, 2], [2, 0], [0, 5], [5, 6], [1, 3], [3, 0]]
+  },
+  {
+    name: '毕',
+    fullName: '毕月乌',
+    symbol: '西方白虎',
+    animal: '乌',
+    element: '火',
+    planet: '太阴 (月)',
+    degrees: 16,
+    startAngle: 231.4,
+    starsCount: 8,
+    tangText: '毕八星如叉，主弋猎之事，又主边境兵马。月离于毕，俾滂沱矣。能感甘霖遍野。',
+    temperament: '甘霖润物，气度宏博，运筹帷幄',
+    fortuneKeywords: ['月离于毕', '滂沱甘雨', '兵武休明'],
+    auspiciousMineral: '辰砂 (敦煌朱砂)',
+    stars: [
+      { name: '毕宿五 (Aldebaran 毕大星)', x: 22, y: -18, mag: 0.8 },
+      { name: '毕宿一', x: -20, y: 22, mag: 3.5 },
+      { name: '毕宿二', x: -10, y: 15, mag: 3.8 },
+      { name: '毕宿三', x: 0, y: 5, mag: 3.6 },
+      { name: '毕宿四', x: 12, y: -5, mag: 3.7 },
+      { name: '毕宿六', x: 28, y: -8, mag: 3.9 },
+    ],
+    connections: [[1, 2], [2, 3], [3, 4], [4, 0], [0, 5]]
+  },
+  {
+    name: '觜',
+    fullName: '觜火猴',
+    symbol: '西方白虎',
+    animal: '猴',
+    element: '火',
+    planet: '荧惑 (火)',
+    degrees: 2,
+    startAngle: 244.2,
+    starsCount: 3,
+    tangText: '觜三星为白虎之首项，主行军先驱。三星甚锐，形如鼎足，光芒凝烈。',
+    temperament: '捷智锐断，灵机百应，出奇致胜',
+    fortuneKeywords: ['灵犀一点', '先声夺人', '运思若神'],
+    auspiciousMineral: '赤铅丹',
+    stars: [
+      { name: '觜宿一 (Meissa)', x: 0, y: -20, mag: 3.4 },
+      { name: '觜宿二', x: -15, y: 15, mag: 4.4 },
+      { name: '觜宿三', x: 15, y: 15, mag: 4.1 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 0]]
+  },
+  {
+    name: '参',
+    fullName: '参水猿',
+    symbol: '西方白虎',
+    animal: '猿',
+    element: '水',
+    planet: '辰星 (水)',
+    degrees: 9,
+    startAngle: 257.1,
+    starsCount: 7,
+    tangText: '参七星为白虎之躯，主斩刈威刑之柄。三台环绕，伐三星居中，璀璨如玉衡。',
+    temperament: '森严挺秀，器局雄拔，独当一面',
+    fortuneKeywords: ['参商光耀', '玉衡横汉', '赫赫昭临'],
+    auspiciousMineral: '青金石 (石青绀)',
+    stars: [
+      { name: '参宿四 (Betelgeuse)', x: -28, y: -30, mag: 0.5 },
+      { name: '参宿五 (Bellatrix)', x: 28, y: -26, mag: 1.6 },
+      { name: '参宿一 (Alnitak)', x: -14, y: 0, mag: 1.7 },
+      { name: '参宿二 (Alnilam)', x: 0, y: 0, mag: 1.7 },
+      { name: '参宿三 (Mintaka)', x: 14, y: 0, mag: 2.2 },
+      { name: '参宿六 (Saiph)', x: -24, y: 30, mag: 2.0 },
+      { name: '参宿七 (Rigel)', x: 26, y: 32, mag: 0.1 },
+    ],
+    connections: [[0, 2], [1, 4], [2, 3], [3, 4], [2, 5], [4, 6]]
+  },
+
+  // 南方朱雀 (Southern Vermilion Bird)
+  {
+    name: '井',
+    fullName: '井木犴',
+    symbol: '南方朱雀',
+    animal: '犴',
+    element: '木',
+    planet: '岁星 (木)',
+    degrees: 33,
+    startAngle: 270,
+    starsCount: 8,
+    tangText: '东井八星为天泉，朱雀之冠也。主法令平正，天降清泉，川渎不涸，万民安居。',
+    temperament: '清泉无滞，法正身直，泽被百代',
+    fortuneKeywords: ['井泉甘冽', '法则清平', '长流不息'],
+    auspiciousMineral: '石绿 (孔雀石绿)',
+    stars: [
+      { name: '井宿一', x: -28, y: -20, mag: 3.3 },
+      { name: '井宿二', x: -10, y: -22, mag: 3.5 },
+      { name: '井宿三', x: 10, y: -20, mag: 3.6 },
+      { name: '井宿四', x: 28, y: -18, mag: 3.2 },
+      { name: '井宿五', x: 28, y: 20, mag: 3.1 },
+      { name: '井宿六', x: 10, y: 18, mag: 3.4 },
+      { name: '井宿七', x: -10, y: 20, mag: 3.6 },
+      { name: '井宿八', x: -28, y: 22, mag: 3.8 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 0]]
+  },
+  {
+    name: '鬼',
+    fullName: '鬼金羊',
+    symbol: '南方朱雀',
+    animal: '羊',
+    element: '金',
+    planet: '太白 (金)',
+    degrees: 4,
+    startAngle: 282.8,
+    starsCount: 4,
+    tangText: '舆鬼四星为天目，中含积尸气（M44星团）。察视幽冥，祛除妖氛，天地肃穆。',
+    temperament: '心如明镜，明见幽微，秉道行世',
+    fortuneKeywords: ['朗鉴无私', '积气凝华', '神清目朗'],
+    auspiciousMineral: '白垩粉 / 泥金',
+    stars: [
+      { name: '鬼宿一', x: -18, y: -18, mag: 3.9 },
+      { name: '鬼宿二', x: 18, y: -18, mag: 4.2 },
+      { name: '鬼宿三', x: 18, y: 18, mag: 4.0 },
+      { name: '鬼宿四', x: -18, y: 18, mag: 4.4 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 0]]
+  },
+  {
+    name: '柳',
+    fullName: '柳土獐',
+    symbol: '南方朱雀',
+    animal: '獐',
+    element: '土',
+    planet: '镇星 (土)',
+    degrees: 15,
+    startAngle: 295.7,
+    starsCount: 8,
+    tangText: '柳八星为朱雀之口喙，主天厨供奉。又为草木条畅之象，阳春三月，垂柳如丝。',
+    temperament: '随风化雨，柔中寓刚，生意盎然',
+    fortuneKeywords: ['条畅敷荣', '天厨祥瑞', '生意融融'],
+    auspiciousMineral: '敦煌雌黄',
+    stars: [
+      { name: '柳一', x: -32, y: 18, mag: 3.9 },
+      { name: '柳二', x: -20, y: 8, mag: 3.8 },
+      { name: '柳三', x: -10, y: -5, mag: 3.7 },
+      { name: '柳四', x: 0, y: -15, mag: 3.4 },
+      { name: '柳五', x: 12, y: -10, mag: 3.6 },
+      { name: '柳六', x: 22, y: 2, mag: 3.8 },
+      { name: '柳七', x: 30, y: 15, mag: 4.0 },
+      { name: '柳八', x: 36, y: 28, mag: 4.3 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7]]
+  },
+  {
+    name: '星',
+    fullName: '星日马',
+    symbol: '南方朱雀',
+    animal: '马',
+    element: '火',
+    planet: '太阳 (日)',
+    degrees: 7,
+    startAngle: 308.5,
+    starsCount: 7,
+    tangText: '七星为朱雀之项颈，主贤良大士。七曜同辉，天下文风大扇，盛世文明。',
+    temperament: '骏骥驰骋，光华溢目，卓荦不羁',
+    fortuneKeywords: ['七星贯珠', '骅骝开道', '文质彬彬'],
+    auspiciousMineral: '辰砂朱雀红',
+    stars: [
+      { name: '星宿一 (Alphard 独星)', x: 0, y: -25, mag: 1.9 },
+      { name: '星宿二', x: -15, y: -12, mag: 4.2 },
+      { name: '星宿三', x: 15, y: -12, mag: 4.3 },
+      { name: '星宿四', x: -20, y: 5, mag: 4.5 },
+      { name: '星宿五', x: 20, y: 5, mag: 4.4 },
+      { name: '星宿六', x: -10, y: 22, mag: 4.8 },
+      { name: '星宿七', x: 10, y: 22, mag: 4.9 },
+    ],
+    connections: [[1, 0], [2, 0], [3, 1], [4, 2], [5, 3], [6, 4]]
+  },
+  {
+    name: '张',
+    fullName: '张月鹿',
+    symbol: '南方朱雀',
+    animal: '鹿',
+    element: '火',
+    planet: '太阴 (月)',
+    degrees: 18,
+    startAngle: 321.4,
+    starsCount: 6,
+    tangText: '张六星为朱雀之嗉羽，主宗庙礼乐、赏赐庆典。鹿鸣呦呦，食野之苹，福瑞并至。',
+    temperament: '温恭有礼，雅量容众，清音和鸣',
+    fortuneKeywords: ['呦呦鹿鸣', '玉佩琼琚', '庆赏优隆'],
+    auspiciousMineral: '泥金赤金',
+    stars: [
+      { name: '张宿一', x: -25, y: -18, mag: 3.7 },
+      { name: '张宿二', x: -12, y: -8, mag: 4.0 },
+      { name: '张宿三', x: 0, y: 0, mag: 4.1 },
+      { name: '张宿四', x: 12, y: -8, mag: 3.9 },
+      { name: '张宿五', x: 25, y: -18, mag: 4.2 },
+      { name: '张宿六', x: 0, y: 22, mag: 4.3 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [2, 5]]
+  },
+  {
+    name: '翼',
+    fullName: '翼火蛇',
+    symbol: '南方朱雀',
+    animal: '蛇',
+    element: '火',
+    planet: '荧惑 (火)',
+    degrees: 18,
+    startAngle: 334.2,
+    starsCount: 22,
+    tangText: '翼二十二星为朱雀之翼翮，主四方宾客与礼乐声容。大鹏展羽，扶摇九万，大夏升平。',
+    temperament: '静谧深邃，远行致远，振羽搏云',
+    fortuneKeywords: ['扶摇直上', '万邦来仪', '风行万里'],
+    auspiciousMineral: '辰砂赤',
+    stars: [
+      { name: '翼一', x: -38, y: -10, mag: 3.8 },
+      { name: '翼二', x: -28, y: -20, mag: 4.0 },
+      { name: '翼三', x: -16, y: -15, mag: 4.1 },
+      { name: '翼四', x: 0, y: -25, mag: 3.6 },
+      { name: '翼五', x: 16, y: -15, mag: 4.0 },
+      { name: '翼六', x: 28, y: -20, mag: 4.2 },
+      { name: '翼七', x: 38, y: -10, mag: 4.1 },
+      { name: '翼八', x: 25, y: 15, mag: 4.3 },
+      { name: '翼九', x: -25, y: 15, mag: 4.4 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [2, 8], [4, 7]]
+  },
+  {
+    name: '轸',
+    fullName: '轸水蚓',
+    symbol: '南方朱雀',
+    animal: '蚓',
+    element: '水',
+    planet: '辰星 (水)',
+    degrees: 17,
+    startAngle: 347.1,
+    starsCount: 4,
+    tangText: '轸四星为天车，朱雀之尾宿也。旁有长沙星。主行车辇驭、巡幸八荒，吉事载途。',
+    temperament: '持盈保泰，循道徐行，万里不殆',
+    fortuneKeywords: ['载誉而归', '玉辇巡春', '坦途万里'],
+    auspiciousMineral: '青金石 (石青)',
+    stars: [
+      { name: '轸宿一 (Gienah)', x: -20, y: -20, mag: 2.6 },
+      { name: '轸宿二 (Algorab)', x: 20, y: -20, mag: 2.9 },
+      { name: '轸宿三 (Kraz)', x: 22, y: 20, mag: 2.6 },
+      { name: '轸宿四 (Minkar)', x: -22, y: 20, mag: 3.0 },
+      { name: '长沙一 (伴星)', x: 0, y: 35, mag: 4.5 },
+    ],
+    connections: [[0, 1], [1, 2], [2, 3], [3, 0], [2, 4]]
+  },
+];
+
+/**
+ * Circumpolar stars (北极与紫微垣, as drawn in Dunhuang S.3326 circular chart)
+ */
+export const CIRCUMPOLAR_STARS = [
+  // 北斗七星 (Big Dipper)
+  { id: 'bd1', name: '天枢 (Dubhe)', x: -35, y: -65, mag: 1.8, school: 'shi' as const },
+  { id: 'bd2', name: '天璇 (Merak)', x: -45, y: -45, mag: 2.4, school: 'shi' as const },
+  { id: 'bd3', name: '天玑 (Phecda)', x: -25, y: -35, mag: 2.4, school: 'shi' as const },
+  { id: 'bd4', name: '天权 (Megrez)', x: -15, y: -48, mag: 3.3, school: 'shi' as const },
+  { id: 'bd5', name: '玉衡 (Alioth)', x: 8, y: -58, mag: 1.8, school: 'shi' as const },
+  { id: 'bd6', name: '开阳 (Mizar)', x: 30, y: -68, mag: 2.2, school: 'shi' as const },
+  { id: 'bd7', name: '摇光 (Alkaid)', x: 55, y: -80, mag: 1.9, school: 'shi' as const },
+
+  // 北极五星 (Polar Stars)
+  { id: 'bj1', name: '太子', x: -8, y: 12, mag: 4.0, school: 'gan' as const },
+  { id: 'bj2', name: '帝星 (Polaris Polaris/Kochab in Tang)', x: 0, y: 0, mag: 2.0, school: 'shi' as const },
+  { id: 'bj3', name: '庶子', x: 8, y: -10, mag: 4.2, school: 'gan' as const },
+  { id: 'bj4', name: '后宫', x: 15, y: -2, mag: 4.5, school: 'gan' as const },
+  { id: 'bj5', name: '天枢星纽', x: -12, y: -5, mag: 4.3, school: 'wu' as const },
+
+  // 勾陈六星
+  { id: 'gc1', name: '勾陈一', x: 20, y: 25, mag: 2.0, school: 'shi' as const },
+  { id: 'gc2', name: '勾陈二', x: 28, y: 35, mag: 4.1, school: 'shi' as const },
+  { id: 'gc3', name: '勾陈三', x: 38, y: 30, mag: 4.3, school: 'shi' as const },
+  { id: 'gc4', name: '勾陈四', x: 32, y: 15, mag: 4.0, school: 'shi' as const },
+];
+
+export const CIRCUMPOLAR_CONNECTIONS: [string, string][] = [
+  ['bd1', 'bd2'], ['bd2', 'bd3'], ['bd3', 'bd4'], ['bd4', 'bd1'],
+  ['bd4', 'bd5'], ['bd5', 'bd6'], ['bd6', 'bd7'],
+  ['bj1', 'bj2'], ['bj2', 'bj3'], ['bj3', 'bj4'],
+  ['gc1', 'gc2'], ['gc2', 'gc3'], ['gc3', 'gc4'],
+];
+
+/**
+ * Derive 28 Mansion by Gregorian Date & year day count
+ * Traditional formula utilizes day number modulo 28
+ */
+export function getMansionByDate(dateStr: string): Mansion28 {
+  const [year, month, day] = dateStr.split('-').map(Number);
+  
+  // Astronomical Julian day calculation for reliable historical day-of-week & mansion cycle
+  const a = Math.floor((14 - month) / 12);
+  const y = year + 4800 - a;
+  const m = month + 12 * a - 3;
+  const jdn = day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
+  
+  // Traditional 28 Mansion day-cycle alignment:
+  // (JDN + 23) % 28 maps directly into the 28 Xiu sequence
+  const mansionIndex = Math.abs((jdn + 23) % 28);
+  return MANSIONS_28[mansionIndex] || MANSIONS_28[0];
+}
+
+/**
+ * Authentic Tang Dynasty divination presets if Gemini API is offline or key not provided
+ */
+export function getPresetOracle(mansion: Mansion28, name: string, lunarYearGanzhi: string): StarOracleResult {
+  const titles = [
+    `${mansion.symbol}${mansion.name}宿度曜星君`,
+    `大唐司天监鉴授·${mansion.fullName}御极真官`,
+    `敦煌文书S.3326·${mansion.name}曜元神真形`,
+  ];
+
+  return {
+    poemTitle: `${mansion.name}曜流光`,
+    tangPoem: `大漠长河映紫微，${mansion.name}星夜照玉门归。\n天工墨染三千界，宝瑟仙韶入翠微。`,
+    imperialTitle: titles[0],
+    omenReading: `【星官临位】本命直符太微之垣，临宿于${mansion.fullName}，度数广阔${mansion.degrees}度，得${mansion.element}德之精。\n【天象推演】敦煌遗书S.3326占曰：“${mansion.tangText.slice(0, 50)}……” 天垂象，见吉凶，行者得其润泽。\n【性灵气格】求占者${name || '善信'}禀${mansion.temperament}，性如敦煌鸣沙之净、壁画之彩。\n【祈吉箴言】敬天循道，以${mansion.auspiciousMineral}护持，万里行途，自得星宿庇佑。`,
+    auspiciousColor: mansion.auspiciousMineral,
+    talismanAdvice: `如意吉祥 · ${mansion.fortuneKeywords.join(' · ')}`,
+    isAiGenerated: false
+  };
+}
