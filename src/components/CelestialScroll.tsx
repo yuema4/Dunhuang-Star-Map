@@ -1,12 +1,24 @@
 import React, { useRef, useState } from 'react';
 import { UserAstralProfile, DunhuangStyleConfig } from '../types';
 import { StarChartSvg } from './StarChartSvg';
+import { MansionDetailAccordion } from './MansionDetailAccordion';
+import { StarOracleDetailModal } from './StarOracleDetailModal';
 import {
   DUNHUANG_PALETTES,
   DEFAULT_STYLE_CONFIG,
   DunhuangSvgAssets,
 } from '../utils/dunhuangMuralAssets';
-import { Download, Sparkles, Scroll, Minimize2, Check, Palette, Wand2 } from 'lucide-react';
+import {
+  Download,
+  Sparkles,
+  Scroll,
+  Minimize2,
+  Check,
+  Palette,
+  Wand2,
+  Compass,
+  BookOpen,
+} from 'lucide-react';
 
 interface CelestialScrollProps {
   profile: UserAstralProfile;
@@ -26,6 +38,7 @@ export const CelestialScroll: React.FC<CelestialScrollProps> = ({
   const [viewMode, setViewMode] = useState<'editorial' | 'panorama'>('editorial');
   const [isExporting, setIsExporting] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showOracleModal, setShowOracleModal] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const { mansion, lunarInfo, oracle, name, solarDate } = profile;
@@ -327,6 +340,21 @@ export const CelestialScroll: React.FC<CelestialScrollProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* Detailed Star Prophecy & Classical Allusion Trigger Button */}
+          <button
+            onClick={() => setShowOracleModal(true)}
+            style={{
+              backgroundColor: palette.cinnabar + '20',
+              borderColor: palette.gold,
+              color: palette.goldBright,
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 border rounded text-xs tracking-wider hover:brightness-125 transition-all font-medium cursor-pointer shadow-xs"
+            title="点击星象图标：开启星曜详细谶语与《史记》《乙巳占》古籍典故"
+          >
+            <Compass className="w-3.5 h-3.5 animate-pulse" />
+            <span>星曜谶语</span>
+          </button>
+
           {/* Mural Asset Studio Launcher Button */}
           {onOpenAssetLibrary && (
             <button
@@ -445,11 +473,56 @@ export const CelestialScroll: React.FC<CelestialScrollProps> = ({
               >
                 {mansion.fullName} · {palette.name}
               </div>
+
+              {/* Interactive Celestial Icon Trigger */}
+              <button
+                onClick={() => setShowOracleModal(true)}
+                style={{
+                  borderColor: palette.cinnabar + '70',
+                  color: palette.cinnabar,
+                  backgroundColor: palette.cinnabar + '15',
+                }}
+                className="group flex items-center gap-1.5 px-2.5 py-1.5 border rounded-xs hover:bg-black/10 transition-all cursor-pointer shadow-xs w-fit"
+                title="点击星象图标：开启本命星宿详细谶语与《史记》《乙巳占》深层典故"
+              >
+                <div
+                  style={{
+                    backgroundColor: palette.cinnabar,
+                    color: '#FFFFFF',
+                  }}
+                  className="w-5 h-5 rounded-full flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform"
+                >
+                  <Compass className="w-3 h-3 group-hover:rotate-45 transition-transform" />
+                </div>
+                <span className="text-[11px] font-serif-sc font-bold tracking-wider">
+                  星曜详细谶语
+                </span>
+              </button>
             </div>
 
             {/* Center Area: Authentic Dunhuang S.3326 Star Chart with Feitian & Baoxianghua */}
             <div className="relative flex-1 flex items-center justify-center h-full px-2">
               <StarChartSvg natalMansion={mansion} size={390} styleConfig={styleConfig} />
+
+              {/* Floating Celestial Badge Trigger */}
+              <button
+                onClick={() => setShowOracleModal(true)}
+                style={{
+                  backgroundColor: palette.bgPaper + 'ea',
+                  borderColor: palette.gold,
+                  color: palette.textColor,
+                }}
+                className="absolute bottom-2 right-4 flex items-center gap-1.5 px-2.5 py-1 border rounded-xs text-[10px] tracking-wider hover:scale-105 transition-all cursor-pointer shadow-md group z-20 backdrop-blur-xs"
+                title="点击星象图标：开启星曜详细谶语与古籍典故"
+              >
+                <div
+                  style={{ backgroundColor: palette.cinnabar }}
+                  className="w-4 h-4 rounded-full flex items-center justify-center text-white shadow-xs"
+                >
+                  <Compass className="w-2.5 h-2.5 group-hover:rotate-45 transition-transform" />
+                </div>
+                <span className="font-serif-sc font-bold">星曜详细谶语</span>
+              </button>
             </div>
 
             {/* Right Column: Destiny Vector & Seals */}
@@ -572,14 +645,29 @@ export const CelestialScroll: React.FC<CelestialScrollProps> = ({
             {/* Central Astronomical Chart */}
             <div
               style={{ borderRightColor: palette.textColor + '30' }}
-              className="flex flex-col items-center justify-center border-r pr-10"
+              className="flex flex-col items-center justify-center border-r pr-10 relative"
             >
-              <span
-                style={{ color: palette.cinnabar }}
-                className="text-xs font-bold tracking-[0.2em] uppercase mb-2 font-serif-sc"
-              >
-                {mansion.symbol} · {mansion.fullName}图谱
-              </span>
+              <div className="flex items-center gap-2 mb-2">
+                <span
+                  style={{ color: palette.cinnabar }}
+                  className="text-xs font-bold tracking-[0.2em] uppercase font-serif-sc"
+                >
+                  {mansion.symbol} · {mansion.fullName}图谱
+                </span>
+                <button
+                  onClick={() => setShowOracleModal(true)}
+                  style={{
+                    backgroundColor: palette.cinnabar + '20',
+                    borderColor: palette.cinnabar + '60',
+                    color: palette.cinnabar,
+                  }}
+                  className="flex items-center gap-1 px-2 py-0.5 border rounded-xs text-[10px] hover:bg-black/10 transition-all cursor-pointer font-serif-sc shadow-xs"
+                  title="点击星象图标：开启星曜详细谶语与深层古籍典故"
+                >
+                  <Compass className="w-3 h-3 animate-pulse" />
+                  <span>星曜详细谶语</span>
+                </button>
+              </div>
               <StarChartSvg natalMansion={mansion} size={370} styleConfig={styleConfig} />
             </div>
 
@@ -731,9 +819,18 @@ export const CelestialScroll: React.FC<CelestialScrollProps> = ({
           </div>
           <div
             style={{ borderTopColor: palette.gold + '30' }}
-            className="mt-4 pt-3 border-t flex justify-between text-xs text-[#E2DCC8]/60"
+            className="mt-4 pt-3 border-t flex items-center justify-between text-xs text-[#E2DCC8]/70"
           >
-            <span>尊号：{oracle.imperialTitle}</span>
+            <span className="truncate max-w-[140px]">尊号：{oracle.imperialTitle}</span>
+            <button
+              onClick={() => setShowOracleModal(true)}
+              style={{ color: palette.goldBright }}
+              className="flex items-center gap-1 hover:underline text-[11px] font-bold cursor-pointer"
+              title="点击查看二十八宿星曜详细谶语与史籍考释"
+            >
+              <Compass className="w-3 h-3" />
+              <span>详考典故 →</span>
+            </button>
           </div>
         </div>
 
@@ -774,6 +871,25 @@ export const CelestialScroll: React.FC<CelestialScrollProps> = ({
           </div>
         </div>
       </div>
+
+      {/* 本命星宿详细解读折叠面板 (Detailed Natal Mansion Interpretation Accordion) */}
+      <MansionDetailAccordion
+        mansion={mansion}
+        lunarInfo={lunarInfo}
+        paletteId={styleConfig?.paletteId}
+        defaultOpen={true}
+      />
+
+      {/* 星曜详细谶语弹窗 (Detailed Star Prophecy & Classical Allusions Modal) */}
+      <StarOracleDetailModal
+        isOpen={showOracleModal}
+        onClose={() => setShowOracleModal(false)}
+        mansion={mansion}
+        lunarInfo={lunarInfo}
+        oracle={oracle}
+        userName={name}
+        paletteId={styleConfig?.paletteId}
+      />
     </div>
   );
 };
